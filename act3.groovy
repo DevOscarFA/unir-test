@@ -19,19 +19,21 @@ pipeline {
         stage('Unit tests') { 
             steps { 
                 sh 'make test-unit' 
-                archiveArtifacts artifacts: 'results/*.xml' 
+                archiveArtifacts artifacts: 'results/*.xml'
+                archiveArtifacts artifacts: 'results/*.html'
             } 
         }
         stage('Api tests') { 
             steps { 
                 sh 'make test-api' 
-                archiveArtifacts artifacts: 'results/api_result.xml' 
+                archiveArtifacts artifacts: 'results/*.xml' 
+                archiveArtifacts artifacts: 'results/*.html'
             } 
         }
         stage('e2e tests') { 
             steps { 
                 sh 'make test-e2e' 
-                archiveArtifacts artifacts: 'results/cypress_result.xml' 
+                archiveArtifacts artifacts: 'results/*.xml' 
             } 
         }
     } 
@@ -39,6 +41,10 @@ pipeline {
         always { 
             junit 'results/*_result.xml' 
             cleanWs() 
+            echo 'Sending email'
+            mail to: "oscardevops@gmail.com",
+            subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: ${env.JOB_NAME} Build Number: ${env.BUILD_NUMBER}"
         }
         success {  
             echo "El nombre del trabajo es: ${JOB_NAME}"
@@ -46,7 +52,7 @@ pipeline {
              
         }  
         failure {  
-            mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "foo@foomail.com";  
+            echo "${currentBuild.currentResult}: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }  
     } 
 } 
