@@ -42,9 +42,9 @@ pipeline {
             junit 'results/*_result.xml' 
             cleanWs() 
             echo 'Sending email'
-            mail to: "oscardevops@gmail.com",
-            subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
-            body: "${currentBuild.currentResult}: ${env.JOB_NAME} Build Number: ${env.BUILD_NUMBER}"
+            echo 'mail to: oscardevops@gmail.com'
+            echo "subject: Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            echo "body: ${currentBuild.currentResult}: ${env.JOB_NAME} Build Number: ${env.BUILD_NUMBER}"
         }
         success {  
             echo "El nombre del trabajo es: ${JOB_NAME}"
