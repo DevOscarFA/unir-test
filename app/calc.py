@@ -1,3 +1,8 @@
+import app, math
+
+class InvalidPermissions(Exception):
+    pass
+
 class Calculator:
     def add(self, x, y):
         self.check_types(x, y)
@@ -18,9 +23,33 @@ class Calculator:
 
         return x / y
 
+    def remainder(self, x, y):
+        self.check_types(x, y)
+        if y == 0:
+            raise TypeError("La división por cero no es posible")
+        return x % y
+
     def power(self, x, y):
         self.check_types(x, y)
         return x ** y
+
+    def sqrt(self, x):
+        self.check_types(x)
+
+        if x < 0:
+            raise TypeError(
+                "No se puede calcular la raíz cuadrada de un número negativo sin usar números complejos"
+            )
+
+        return math.sqrt(x)
+
+    def logarithm10(self, x):
+        self.check_types(x)
+
+        if x <= 0:
+            raise TypeError("No se puede calcular log10 de números negativos o cero")
+
+        return math.log10(x)
 
     def check_types(self, x, y):
         if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
@@ -29,5 +58,18 @@ class Calculator:
 
 if __name__ == "__main__":  # pragma: no cover
     calc = Calculator()
-    result = calc.add(2, 2)
-    print(result)
+    resultadd = calc.add(2, 2)
+    resultsubstract = calc.substract(2, 1)
+    resultdivide = calc.divide(8, 2)
+    resultpower = calc.power(2, 4)
+    resultremainder = calc.remainder(2, 1)
+    resultsquareroot = calc.sqrt(9)
+    resultlogarithm10 = calc.logarithm10(2)
+
+    print("resultadd: ", resultadd)
+    print("resultsubstract: ", resultsubstract)
+    print("resultdivide: ", resultdivide)
+    print("resultpower: ", resultpower)
+    print("resultremainder: ", resultremainder)
+    print("resultsquareroot: ", resultsquareroot)
+    print("resultlogarithm10: ", resultlogarithm10)
