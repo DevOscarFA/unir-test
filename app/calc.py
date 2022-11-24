@@ -31,7 +31,9 @@ class Calculator:
 
     def power(self, x, y):
         self.check_types(x, y)
-        return x ** y
+        if x == 0 and y < 0:
+            raise TypeError("Cero no se puede elevar a una potencia negativa")
+        return x**y
 
     def sqrt(self, x):
         self.check_types(x)
@@ -51,9 +53,9 @@ class Calculator:
 
         return math.log10(x)
 
-    def check_types(self, x, y):
+    def check_types(self, x, y=0):
         if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
-            raise TypeError("Parameters must be numbers")
+            raise TypeError("Los parámetros deben ser números")
 
 
 if __name__ == "__main__":  # pragma: no cover
